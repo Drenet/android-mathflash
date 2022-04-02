@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/xw_nav"
+    app:startDestination="@id/nav_splash">
+
+    <fragment
+        android:id="@+id/nav_splash"
+        android:name="com.awesomegroupllc.flash.ui.SplashFragment"
+        >
+        <action
+            android:id="@+id/action_loadGame"
+            app:destination="@id/nav_game"
+            app:enterAnim="@anim/nav_long_enter_anim"
+            app:exitAnim="@anim/nav_long_exit_anim"
+            app:popUpTo="@id/xw_nav"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_game"
+        android:name="com.awesomegroupllc.flash.ui.GameFragment"
+        />
+</navigation>

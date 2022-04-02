@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mixpanel_app_id">b4fe14be832906043158196b0c9bd2b3</string>
+    <string translatable="false"  name="game_services_project_id">516998076602</string>
+</resources>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "516998076602",
+    "project_id": "xword-awesome",
+    "storage_bucket": "xword-awesome.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516998076602:android:405bc411af423de140ca83",
+        "android_client_info": {
+          "package_name": "com.awesomegroupllc.flash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "516998076602-570g3f609tp8q3mpgbob98rss7a9vt78.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRLCHMvdfhe5N4MBaDp89GTCnFY4b9QHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "516998076602-570g3f609tp8q3mpgbob98rss7a9vt78.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
