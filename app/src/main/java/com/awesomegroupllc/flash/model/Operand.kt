@@ -13,6 +13,8 @@ enum class Operand {
         Random(System.currentTimeMillis()).nextInt(0, this.size - 1)
 }
 
+fun random() = Operand.values().random()
+
 fun randomNot(operand: Operand, allowDivision: Boolean = true) =
     when(operand){
         Operand.ADDITION -> arrayListOf(Operand.SUBTRACTION, Operand.MULTIPLICATION).apply { if(allowDivision) add(

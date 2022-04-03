@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.awesomegroupllc.flash.model.Difficulty
 import com.awesomegroupllc.flash.model.Operand
+import com.awesomegroupllc.flash.model.random
 import com.awesomegroupllc.flash.model.randomNot
 import com.awesomegroupllc.flash.ui.data.Card
 import com.awesomegroupllc.flash.util.FlashPrefs
@@ -61,7 +62,7 @@ class GameViewModel : ViewModel() {
 
     fun generateCards(){
         for (i in cardStack.size..CARD_STACK_NOMINAL_SIZE){
-            cardStack.add(generateCard(currentOperand))
+            cardStack.add(generateCard(random()))
         }
         if(incorrectStack.size >= 1){
             cardStack.add(incorrectStack.removeAt(0))

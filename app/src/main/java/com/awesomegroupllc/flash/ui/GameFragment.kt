@@ -4,17 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement.SpaceAround
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement.Center
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.awesomegroupllc.base.ui.compose.AwesomeButton
@@ -36,33 +40,67 @@ class GameFragment : Fragment() {
         setContent {
             FlashTheme {
 
-                val state = viewModel.cardLiveData.observeAsState(Card(0, 0, Operand.ADDITION, 0))
+                val state = viewModel.cardLiveData.observeAsState(
+                    Card(0, 0, Operand.ADDITION, 0)
+                )
 
                 Column(
                     modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = CenterHorizontally,
-                    verticalArrangement = SpaceAround
+                    horizontalAlignment = CenterHorizontally
                 ) {
 
-                    Text(text = state.value.value1.toString())
-                    Text(
-                        text = when (state.value.operand) {
-                            Operand.ADDITION -> "+"
-                            Operand.SUBTRACTION -> "-"
-                            else -> "???"
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        horizontalAlignment = CenterHorizontally,
+                        verticalArrangement = spacedBy(16.dp)
+                    ) {
+                        Text(
+                            text = state.value.value1.toString(),
+                            fontSize = 72.sp
+                        )
+                        if (state.value.operand == Operand.DIVISION) {
+                            Divider(
+                                modifier = Modifier.width(100.dp),
+                                thickness = 3.dp,
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        } else {
+                            Text(
+                                text = when (state.value.operand) {
+                                    Operand.ADDITION -> "+"
+                                    Operand.SUBTRACTION -> "-"
+                                    Operand.MULTIPLICATION -> "x"
+                                    else -> "???"
+                                },
+                                fontSize = 52.sp
+                            )
                         }
-                    )
-                    Text(text = state.value.value2.toString())
 
-                    LazyVerticalGrid(cells = GridCells.Fixed(3)){
-                        items(state.value.availableAnswers){
-                            AwesomeButton(text = it.toString()) {
-                                viewModel.submitAnswer(state.value, it)
+                        Text(
+                            text = state.value.value2.toString(),
+                            fontSize = 72.sp
+                        )
+                    }
+
+                    if (state.value.availableAnswers.isNotEmpty()) {
+                        LazyVerticalGrid(
+                            cells = GridCells.Fixed(3),
+                            horizontalArrangement = Center,
+                            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 10.dp)
+                        ) {
+                            items(state.value.availableAnswers) {
+                                AwesomeButton(
+                                    modifier = Modifier.size(56.dp),
+                                    text = it.toString()
+                                ) {
+                                    viewModel.submitAnswer(state.value, it)
+                                }
                             }
                         }
+                    } else {
+                        // TEXT INPUT???
                     }
                 }
-
             }
         }
     }
