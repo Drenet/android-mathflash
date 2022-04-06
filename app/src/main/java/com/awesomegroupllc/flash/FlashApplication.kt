@@ -14,6 +14,9 @@ class FlashApplication : Application() {
 
         FlashPrefs.init(this)
         Analytics.init(this)
+
+        // Every app launch resets the streak
+        FlashPrefs.streak = 0
     }
 
 }

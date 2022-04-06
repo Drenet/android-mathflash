@@ -15,8 +15,11 @@ const val CARD_STACK_NOMINAL_SIZE = 6
 
 class GameViewModel : ViewModel() {
 
-    // TODO: List of 6
     val cardLiveData = MutableLiveData<Card>()
+
+    val streak = MutableLiveData(0)
+
+    val incorrectAnswersOnCard = MutableLiveData<List<Int>>(emptyList())
 
     val cardStack = arrayListOf<Card>()
 
@@ -43,16 +46,22 @@ class GameViewModel : ViewModel() {
     fun submitAnswer(card: Card, answer: Int) {
         if(answer == card.correctAnswer){
             // Update Streak
-            FlashPrefs.streak = FlashPrefs.streak + 1
+            if(incorrectAnswersOnCard.value?.isNotEmpty() == true){
+                // Add card to bad stack
+                incorrectStack.add(card)
+                incorrectAnswersOnCard.value = emptyList()
+            } else {
+                FlashPrefs.streak = FlashPrefs.streak + 1
+            }
+
+            // Move to next question
+            cardLiveData.value = cardStack.removeAt(0)
         } else {
             // Reset Streak
             FlashPrefs.streak = 0
-            // Add card to bad stack
-            incorrectStack.add(card)
+            incorrectAnswersOnCard.value = (incorrectAnswersOnCard.value ?: emptyList()).plus(answer)
         }
-
-        // Move to next question
-        cardLiveData.value = cardStack.removeAt(0)
+        streak.value = FlashPrefs.streak
 
         // If our stack is < 3, generate new cards. Take from the invalid stack LAST if present
         if(cardStack.size <= CARD_STACK_REGEN_SIZE){
@@ -78,11 +87,20 @@ class GameViewModel : ViewModel() {
         var val2 = randGen.nextInt(level.minRandNumber, level.maxRandNumber)
 
         // We cannot divide by 0, so ensure we aren't attempting that
-        if (operand == Operand.DIVISION && val1 == 0) {
-            val1 = 1
-        }
-        if (operand == Operand.DIVISION && val2 == 0) {
-            val2 = 1
+        // We also need to make sure that division ends in whole numbers
+        if(operand == Operand.DIVISION){
+            if(val2 > val1){
+                val t = val2
+                val2 = val1
+                val1 = t
+            }
+
+            if(val2 == 0) val2 = 1
+
+            val1 = val1.coerceAtLeast(val2)
+
+            val vx = val1 / (val2 * 1.0f) // 1.004, 2.4, etc
+            val1 = (vx.toInt() * val2)
         }
 
         val answers = arrayListOf<Int>()
